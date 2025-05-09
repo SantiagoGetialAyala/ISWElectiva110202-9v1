@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Reemplaza esta URL con la URL de tu backend en Azure
-const API_URL = 'https://backinventario-f0b7h6atangaeacm.eastus-01.azurewebsites.net/products/';
+// Usamos la variable de entorno para la URL
+const API_URL = import.meta.env.VITE_API_URL + '/products/';  // Asegúrate de incluir el sufijo '/products/' si es necesario
 
 export async function createProduct(productData) {
   try {
