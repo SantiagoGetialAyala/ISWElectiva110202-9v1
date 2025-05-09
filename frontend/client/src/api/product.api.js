@@ -1,47 +1,64 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/products/';
+// Reemplaza esta URL con la URL de tu backend en Azure
+const API_URL = 'https://backinventario-f0b7h6atangaeacm.eastus-01.azurewebsites.net/products/';
 
 export async function createProduct(productData) {
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(productData),
-  });
-  return await response.json();
+  try {
+    const response = await axios.post(API_URL, productData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al crear el producto:", error);
+    throw new Error("Error al crear producto");
+  }
 }
 
 export async function getAllProducts() {
-  const response = await fetch(API_URL);
-  return await response.json();
+  try {
+    const response = await axios.get(API_URL);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los productos:", error);
+    throw new Error("Error al obtener productos");
+  }
 }
 
 export async function getProductById(id) {
-  const response = await fetch(`${API_URL}${id}/`);
-  if (!response.ok) throw new Error('Producto no encontrado');
-  return await response.json();
+  try {
+    const response = await axios.get(`${API_URL}${id}/`);
+    return response.data;
+  } catch (error) {
+    console.error("Producto no encontrado:", error);
+    throw new Error('Producto no encontrado');
+  }
 }
 
 export async function updateProduct(id, productData) {
-  const response = await fetch(`${API_URL}${id}/`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(productData),
-  });
-  if (!response.ok) throw new Error('Error al actualizar producto');
-  return await response.json();
+  try {
+    const response = await axios.put(`${API_URL}${id}/`, productData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar producto:", error);
+    throw new Error('Error al actualizar producto');
+  }
 }
 
 export async function deleteProduct(id) {
-  const response = await fetch(`${API_URL}${id}/`, {
-    method: 'DELETE',
-  });
-  if (!response.ok) throw new Error('Error al eliminar producto');
-  return response.status;
+  try {
+    const response = await axios.delete(`${API_URL}${id}/`);
+    return response.status;
+  } catch (error) {
+    console.error("Error al eliminar producto:", error);
+    throw new Error('Error al eliminar producto');
+  }
 }
 
 export async function updateProductStock(productId, newStock, originalProduct) {
@@ -65,5 +82,3 @@ export async function updateProductStock(productId, newStock, originalProduct) {
     throw new Error("Error al actualizar producto");
   }
 }
-
-
